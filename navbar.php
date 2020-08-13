@@ -11,8 +11,13 @@
       </div>
       <div class="collapse navbar-collapse" id="navbar-collapse1">
           <ul class="nav navbar-nav">
-              <li class="active"><a href="timeline.php">タイムライン</a></li>
-              <li><a href="users.php">ユーザー一覧</a></li>
+              <?php if(strpos($_SERVER['REQUEST_URL'], 'timeline.php')!==false): ?>
+                <li class="active"><a href="timeline.php">タイムライン</a></li>
+               <li><a href="users.php">ユーザー一覧</a></li>
+              <?php else: ?>
+                <li><a href="timeline.php">タイムライン</a></li>
+                <li class="active"><a href="users.php">ユーザー一覧</a></li>
+              <?php endif; ?>
           </ul>
           <form method="GET" action="timeline.php" class="navbar-form navbar-left" role="search">
               <div class="form-group">
