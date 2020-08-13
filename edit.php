@@ -1,15 +1,15 @@
 <?php
 require('dbconnect.php');
 
-if(isset($_GET['free_id'])){
+if(isset($_GET['feed_id'])){
     $feed_id = $_GET['feed_id'];
-    $sql = 'SELECT `feeds`.*, `users`.`name`,`users`.`img_name` FROM `feeds` LEFT JOIN `users` ON `feeds`.`user_id` = `users`.`id` WHERE `feeds`.`id` =?';
+    $sql = 'SELECT `feeds`.*,`users`.`name`,`users`.`img_name` FROM `feeds` LEFT JOIN
+    `users` ON `feeds`.`user_id`=`users`.`id` WHERE `feeds`.`id`= ?';
     $data = [$feed_id];
-    $stmt = $dbh->prepare($spl);
+    $stmt = $dbh->prepare($sql);
     $stmt->execute($data);
     $feed = $stmt->fetch(PDO::FETCH_ASSOC);
 }
-
 
 if(!empty($_POST)){
     $sql = 'UPDATE `feeds` SET `feed` = ? WHERE `id` = ?';
