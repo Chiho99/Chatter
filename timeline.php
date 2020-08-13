@@ -92,8 +92,10 @@
                             <span class="like-count">10</span>
                             <a href="#collapseComment" data-toggle="collapse" aria-expanded="false"><span>コメントする</span></a>
                             <span class="comment-count">コメント数：5</span>
-                            <a href="edit.php" class="btn btn-success btn-xs">編集</a>
-                            <a onclick="return confirm('ほんとに消すの？');" href="#" class="btn btn-danger btn-xs">削除</a>
+                            <?php if($feed['user_id'] == $signin_user['id']): ?>
+                            <a href="edit.php?feed_id=<?php echo $feed['id']?>" class="btn btn-success btn-xs">編集</a>
+                            <a onclick="return confirm('ほんとに消すの？');" href="delete.php?"feed_id=<?php echo $feed['id']?>" class="btn btn-danger btn-xs">削除</a>
+                            <?php endif; ?>
                         </div>
                         <?php include('comment_view.php'); ?>
                     </div>

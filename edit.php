@@ -1,4 +1,26 @@
 <?php
+require('dbconnect.php');
+
+if(isset($_GET['free_id'])){
+    $feed_id = $_GET['feed_id'];
+    $sql = 'SELECT `feeds`.*, `users`.`name`,`users`.`img_name` FROM `feeds` LEFT JOIN `users` ON `feeds`.`user_id` = `users`.`id` WHERE `feeds`.`id` =?';
+    $data = [$feed_id];
+    $stmt = $dbh->prepare($spl);
+    $stmt->execute($data);
+    $feed = $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
+
+if(!empty($_POST)){
+    $sql = 'UPDATE `feeds` SET `feed` = ? WHERE `id` = ?';
+    $data = [$_POST['feed'], $_POST['feed_id']];
+    $stmt = $dbh->prepare($sql);
+    $stmt->execute($data);
+
+    header('Location: timeline.php');
+    exit();
+
+}
 
 ?>
 <!DOCTYPE html>
@@ -15,11 +37,12 @@
     <div class="container">
         <div class="row">
             <div class="col-xs-4 col-xs-offset-4">
-                <form class="form-group" method="post" action="timeline.php">
-                    <img src="user_profile_img/misae.png" width="60">
-                    野原みさえ<br>
-                    2018-10-14<br>
-                    <textarea name="feed" class="form-control">LearnSNSの開発頑張ろう！</textarea>
+                <form class="form-group" method="post" action="edit.php">
+                    <img src="user_profile_img/<?php echo $feed['img_name'];?>" width="60">
+                   <?php echo $feed['name'];?><br>
+                   <?php echo $feed['created'];?><br>
+                    <textarea name="feed" class="form-control"><?php echo $feed['feed'];?></textarea>
+                    <input type="hidden" name="feed_id" value="<?php echo $feed['id'];?>">
                     <input type="submit" value="更新" class="btn btn-warning btn-xs">
                 </form>
             </div>
