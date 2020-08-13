@@ -11,7 +11,7 @@
       </div>
       <div class="collapse navbar-collapse" id="navbar-collapse1">
           <ul class="nav navbar-nav">
-              <?php if(strpos($_SERVER['REQUEST_URL'], 'timeline.php')!==false): ?>
+              <?php if(strpos($_SERVER['REQUEST_URI'], 'timeline.php')!== false): ?>
                 <li class="active"><a href="timeline.php">タイムライン</a></li>
                <li><a href="users.php">ユーザー一覧</a></li>
               <?php else: ?>
