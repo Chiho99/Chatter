@@ -1,22 +1,13 @@
 <?php
     require('dbconnect.php');
     session_start();
-    // var_dump($_SESSION);
-    // echo 'とんだよ'; 
 
-    // $data = $_POST['input_email'];
     $sql = 'SELECT * FROM `users` WHERE `id`=?';
     $data = [$_SESSION['LearnSNS']['id']];
     $stmt = $dbh->prepare($sql);
     $stmt->execute($data);
     $signin_user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    var_dump($data);
-    // if(!isset($_SESSION['LearnSNS']['id'])){
-    //     header('Location: signin.php');
-    //     exit();
-    // }
-   
     // 初期化
     $errors = [];
     // ユーザーが投稿ボタンを押したら発動
@@ -39,6 +30,26 @@
         }
         
     }
+    // 一覧表示機能
+    // LEFT JOIN で全件取得
+    // feedsテーブルにusersテーブルの情報を紐付けを全件取得できるようにする
+    $sql = 'SELECT `f`.*,`u`.`name`, `u`.`img_name` FROM `feeds` AS `f` LEFT JOIN `users` AS `u` ON `f`.`user_id` = `u`.`id` ORDER BY `f`. `created` DESC';
+    // var_dump($sql);
+    $stmt = $dbh->prepare($sql);
+    $stmt->execute();
+
+    // 表示用の配列を初期化
+    $feeds = [];
+    // while文の条件は「投稿情報が取れなくなるまで」
+    while(true){
+        $record = $stmt->fetch(PDO::FETCH_ASSOC);
+        if($record == false){
+        break;
+        }
+        $feeds[] = $record;
+    }
+    // $var_dump($feeds);
+    // 投稿数だけ繰り返す
     
     
     
@@ -71,18 +82,19 @@
                     </form>
                 </div>
                 <div class="thumbnail">
+                <?php foreach($feeds as $feed): ?>
                     <div class="row">
                         <div class="col-xs-1">
-                            <img src="user_profile_img/misae.png" width="40px">
+                            <img src="user_profile_img/<?php echo $feed['img_name'];?>" width="40px">
                         </div>
                         <div class="col-xs-11">
-                            <a href="profile.php" style="color: #7f7f7f;">野原みさえ</a>
-                            2018-10-14
+                            <?php echo $feed['name']; ?><br>
+                            <a href="profile.php" style="color: #7f7f7f;"><?php echo $feed['created']; ?></a>
                         </div>
                     </div>
                     <div class="row feed_content">
                         <div class="col-xs-12">
-                            <span style="font-size: 24px;">LearnSNSの開発頑張ろう！</span>
+                            <span style="font-size: 24px;><?php echo $feed['feed']; ?></span>
                         </div>
                     </div>
                     <div class="row feed_sub">
@@ -98,6 +110,7 @@
                         <?php include('comment_view.php'); ?>
                     </div>
                 </div>
+                <?php endforeach; ?>
                 <div aria-label="Page navigation">
                     <ul class="pager">
                         <li class="previous disabled"><a><span aria-hidden="true">&larr;</span> Newer</a></li>
