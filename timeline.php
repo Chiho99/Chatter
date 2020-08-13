@@ -14,7 +14,6 @@
     if (!empty($_POST)) {
         // バリデーション
         $feed = $_POST['feed']; // 投稿データ
-        // var_dump($feed);
         // 投稿の空チェック
         if ($feed != '') {
             // 投稿処理
@@ -30,11 +29,37 @@
         }
         
     }
+    // $var_dump($feeds);
+    if(isset($_GET['page'])){
+        $page = $_GET['page'];
+    }else{
+        $page = 1;
+    }
     // 一覧表示機能
+    const CONTENT_PER_PAGE = 5;
+    // -1などのページ数として不正な値を渡された場合の対策
+    $page = max($page, 1);
+    // ヒットしたレコードの数を取得するSQL
+    $sql_count = 'SELECT COUNT(*) AS `cnt` FROM `feeds`';
+    $stmt_count = $dbh->prepare($sql_count);
+    $stmt_count->execute();
+    $record_cnt = $stmt_count->fetch(PDO::FETCH_ASSOC);
+    
+    // 最後のページが何ページになるのかを算出
+    // 最後のページ = 取得してページ数 + 1ページあたりに表示する件数
+    $last_page = ceil($record_cnt['cnt'] / CONTENT_PER_PAGE);
+
+    // 最後のページより大きい値が渡された場合の対策
+    $page = min($page, $last_page);
+
+    $start = ($page - 1) * CONTENT_PER_PAGE;
+
     // LEFT JOIN で全件取得
     // feedsテーブルにusersテーブルの情報を紐付けを全件取得できるようにする
-    $sql = 'SELECT `f`.*,`u`.`name`, `u`.`img_name` FROM `feeds` AS `f` LEFT JOIN `users` AS `u` ON `f`.`user_id` = `u`.`id` ORDER BY `f`. `created` DESC';
-    // var_dump($sql);
+    $sql = 'SELECT `f`.*, `u`.`name`, `u`.`img_name` FROM `feeds` AS `f` LEFT JOIN 
+    `users` AS `u` ON `f`.`user_id`=`u`.`id` ORDER BY `created` DESC LIMIT '.CONTENT_PER_PAGE .' OFFSET ' . $start;
+
+   
     $stmt = $dbh->prepare($sql);
     $stmt->execute();
 
@@ -48,13 +73,8 @@
         }
         $feeds[] = $record;
     }
-    // $var_dump($feeds);
-    // 投稿数だけ繰り返す
     
-    
-    
-
-    
+   
 ?>
 
 <?php include('layouts/header.php'); ?>
@@ -94,7 +114,7 @@
                     </div>
                     <div class="row feed_content">
                         <div class="col-xs-12">
-                            <span style="font-size: 24px;><?php echo $feed['feed']; ?></span>
+                            <span style="font-size: 24px;"><?php echo $feed['feed']; ?></span>
                         </div>
                     </div>
                     <div class="row feed_sub">
@@ -106,17 +126,27 @@
                             <span class="comment-count">コメント数：5</span>
                             <?php if($feed['user_id'] == $signin_user['id']): ?>
                             <a href="edit.php?feed_id=<?php echo $feed['id']?>" class="btn btn-success btn-xs">編集</a>
-                            <a onclick="return confirm('ほんとに消すの？');" href="delete.php?"feed_id=<?php echo $feed['id']?>" class="btn btn-danger btn-xs">削除</a>
+                            <a onclick="return confirm('ほんとに消すの？');" href="delete.php?feed_id=<?php echo $feed['id']?>" class="btn btn-danger btn-xs">削除</a>
                             <?php endif; ?>
                         </div>
                         <?php include('comment_view.php'); ?>
                     </div>
+                    <?php endforeach; ?>
                 </div>
-                <?php endforeach; ?>
+                
                 <div aria-label="Page navigation">
                     <ul class="pager">
-                        <li class="previous disabled"><a><span aria-hidden="true">&larr;</span> Newer</a></li>
-                        <li class="next disabled"><a>Older <span aria-hidden="true">&rarr;</span></a></li>
+                        <?php if($page == 1):?>
+                         <li class="previous disabled"><a href="timeline.php?page=<?php echo $page + 1; ?>"><span aria-hidden="true">&larr; Newer</span></a></li>
+                        <?php else: ?>
+                          <li class="previous"><a href="timeline.php?page=<?php echo$page -1;?>"><span area-hidden="true">&larr;</span>Newer</a></li>
+                        <?php endif; ?>
+
+                        <?php if($page == $last_page):?>
+                          <li class="next disabled"><a href="timeline.php?page=<?php echo $page + 1; ?>">Older<span aria-hidden="true"> Older &rarr;</span></a></li>
+                        <?php else:?>
+                          <li class="next"><a href="timeline.php?page=<?php echo $page + 1; ?>">Older<span aria-hidden="true"> Older &rarr;</span></a></li>
+                        <?php endif;?>
                     </ul>
                 </div>
             </div>
