@@ -8,7 +8,7 @@
     $stmt = $dbh->prepare($sql);
     $stmt->execute($data);
     $signin_user = $stmt->fetch(PDO::FETCH_ASSOC);
-
+    // var_dump($signin_user['id']);
     // ユーザーの一覧を取得
     $sql = 'SELECT * FROM `users`';
     $stmt = $dbh->prepare($sql);
@@ -29,7 +29,6 @@
         $record['feed_cnt'] = $feed['cnt'];
         $users[] = $record;
     }
-    // var_dump($users);
 ?>
 <?php include('layouts/header.php'); ?>
 <body style="margin-top: 60px; background: #E4E6EB;">
@@ -43,9 +42,11 @@
                         <div class="col-xs-2">
                             <img src="user_profile_img/<?php echo $user['img_name'];?>" width="80px">
                         </div>
-                        <div class="col-xs-10">
+                        <div class="col-xs-11">
                             名前  <?php echo $user['name'];?><br>
-                            <a href="profile.php" style="color: #7f7f7f;">
+                            <!-- ユーザー一覧からどのユーザーが選択されたかを示すために、GETパラメータを追加 -->
+                            <!-- 送るべき値はどのユーザーかなので、一意に絞り込めるIDをパラメータに利用 -->
+                            <a href="profile.php?user_id=<?php echo $user['id']; ?>" style="color: #7f7f7f;">
                                 <?php echo $user['created']; ?>からメンバー
                             </a>
                         </div>
