@@ -4,6 +4,7 @@
 
     $sql = 'SELECT * FROM `users` WHERE `id`=?';
     $data = [$_SESSION['LearnSNS']['id']];
+    // $data = [$_GET['user_id']];
     $stmt = $dbh->prepare($sql);
     $stmt->execute($data);
     $signin_user = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -27,8 +28,8 @@
         } else {
             $errors['feed'] = 'blank';
         }
-        
     }
+    
     // $var_dump($feeds);
     if(isset($_GET['page'])){
         $page = $_GET['page'];
@@ -75,15 +76,14 @@
         $comment_data = [$record['id']];
         $comment_stmt = $dbh->prepare($comment_sql);
         $comment_stmt->execute($comment_data);
-
         $comments = [];
         while(true){
             $comment = $comment_stmt->fetch(PDO::FETCH_ASSOC);
             if($comment == false){
                 break;
             }
-            $comments[] = $comment;
-            }
+              $comments[] = $comment;
+        }
         $record['comments'] = $comments;
         $comment_cnt_sql = 'SELECT COUNT(*) AS `comment_cnt` FROM `comments` WHERE `feed_id` = ?';
         $comment_cnt_data = [$record['id']];
@@ -91,8 +91,25 @@
         $comment_cnt_stmt->execute($comment_cnt_data);
         $comment_cnt_result = $comment_cnt_stmt->fetch(PDO::FETCH_ASSOC);
         $record['comment_cnt'] = $comment_cnt_result['comment_cnt'];
-        $feeds[] = $record;
-    }
+        // $feeds[] = $record; 
+        // いいね済みかどうか
+        $like_flg_sql = 'SELECT * FROM `likes` WHERE `user_id` = ? AND `feed_id` = ?';
+        $like_flg_data = [$signin_user['id'], $record['id']];
+        $like_flg_stmt = $dbh->prepare($like_flg_sql);
+        $like_flg_stmt->execute($like_flg_data);
+        $is_liked = $like_flg_stmt->fetch(PDO::FETCH_ASSOC);
+        $record['is_liked'] = $is_liked ? true : false;
+       
+         // 何件いいねされているか確認
+         $like_sql = 'SELECT COUNT(*) AS `like_cnt` FROM `likes` WHERE `feed_id` = ?';
+         $like_data = [$record['id']];
+         $like_stmt = $dbh->prepare($like_sql);
+         $like_stmt->execute($like_data);
+         $like = $like_stmt->fetch(PDO::FETCH_ASSOC);
+         $record['like_cnt'] = $like['like_cnt'];
+         $feeds[] = $record;  
+    };
+
     if (isset($_GET['search_word'])) {
         // 検索を行なった場合の遷移
         $sql = 'SELECT `f`.*, `u`.`name`, `u`.`img_name` FROM `feeds` AS `f` LEFT JOIN `users`
@@ -104,12 +121,12 @@
         `users` AS `u` ON `f`.`user_id`=`u`.`id` ORDER BY `created` DESC LIMIT '. CONTENT_PER_PAGE .' OFFSET ' . $start;
         $data = [];
     }
-   
 ?>
 
 <?php include('layouts/header.php'); ?>
 <body style="margin-top: 60px; background: #E4E6EB;">
     <?php include('navbar.php'); ?>
+    <span hidden id="signin-user"><?php echo $signin_user['id']; ?></span>
     <div class="container">
         <div class="row">
             <div class="col-xs-3">
@@ -149,9 +166,17 @@
                     </div>
                     <div class="row feed_sub">
                         <div class="col-xs-12">
-                            <button class="btn btn-default">いいね！</button>
-                            いいね数：
-                            <span class="like-count">10</span>
+                            <?php if ($feed['is_liked']): ?>
+                              <button class="btn btn-default btn-xs js-unlike">
+                                <span>いいねを取り消す</span>
+                              </button>
+                            <?php else: ?>
+                              <span hidden class="feed-id"><?php echo $feed['id']; ?></span>
+                              <button class="btn btn-default js-like">
+                                  <span >いいね！</span>
+                              </button>
+                            <?php endif; ?>
+                            いいね数：<span class="like-count"><?php echo $feed['like_cnt']; ?></span>
                             <a href="#collapseComment<?php echo $feed['id']; ?>" data-toggle="collapse" aria-expanded="false"><span>コメントする</span></a>
                             <span class="comment-count">コメント数：<?php echo $feed['comment_cnt']; ?></span>
                             <?php if($feed['user_id'] == $signin_user['id']): ?>

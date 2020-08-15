@@ -1,9 +1,14 @@
 <?php
     require('dbconnect.php');
-    $sql = 'SELECT * FROM `users` WHERE `id` = ?';
-    // GET送信で受け取る
-    $data = [$_GET['user_id']];
-    // var_dump($data);
+
+    // userのidをsessionで持たせる
+    session_start();
+    $sql = 'SELECT * FROM `users` WHERE `id`=?';
+    $data = [$_SESSION['LearnSNS']['id']];
+    $stmt = $dbh->prepare($sql);
+    $stmt->execute($data);
+    $signin_user = $stmt->fetch(PDO::FETCH_ASSOC);
+
     $stmt = $dbh->prepare($sql);
     $stmt->execute($data);
     $profile = $stmt->fetch(PDO::FETCH_ASSOC);
