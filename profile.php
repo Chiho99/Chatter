@@ -1,25 +1,28 @@
 <?php
     require('dbconnect.php');
-
-    // userのidをsessionで持たせる
     session_start();
-    $sql = 'SELECT * FROM `users` WHERE `id`=?';
+    // userのidをsessionで持たせる
+    
+    // サインインユーザー
+    $sql = 'SELECT * FROM `users` WHERE `id` = ?';
     $data = [$_SESSION['LearnSNS']['id']];
     $stmt = $dbh->prepare($sql);
     $stmt->execute($data);
     $signin_user = $stmt->fetch(PDO::FETCH_ASSOC);
-
+   
+    // プロフィールを表示しているユーザーのID
+    $sql = 'SELECT * FROM `users` WHERE `id`=?';
+    $data = [$_GET['user_id']];
     $stmt = $dbh->prepare($sql);
     $stmt->execute($data);
     $profile = $stmt->fetch(PDO::FETCH_ASSOC);
 
+    // var_dump($profile);
     // フォローする・解除するボタンの切り替え
     $sql = 'SELECT `id` FROM `followers` WHERE `user_id` = ? AND `follower_id` = ?';
     $data = [$profile['id'], $signin_user['id']];
     $stmt = $dbh->prepare($sql);
     $stmt->execute($data);
-    // フォロー状態を示す
-    // fetchを行ってもレコードが取得できない場合falseが入る
     $is_followed = $stmt->fetch(PDO::FETCH_ASSOC);
 
     // フォロワーの一覧表示
@@ -29,14 +32,17 @@
     $stmt = $dbh->prepare($sql);
     $stmt->execute($data);
 
-    $followers = [];
+    $followers = [];    
     while(true){
         $record = $stmt->fetch(PDO::FETCH_ASSOC);
         if($record == false){
             break;
         }
+        
         $followers[] = $record;
+        // var_dump($record);
     }
+
     // フォローイングの一覧表示
     $sql = 'SELECT `u`.* FROM `followers` AS `f` LEFT JOIN `users` AS `u` ON `u`.`id` =
     `f`.`user_id` WHERE `f`.`follower_id` = ?';
@@ -69,11 +75,11 @@
                   <?php if($is_followed): ?>
                     <!-- URL?キー１=値１＆キー2=値2 -->
                     <a href="follow.php?following_id=<?php echo $profile['id']; ?>&unfollow=true">
-                        <button class="btn btn-default btn-block">フォロー解除する</button>
+                      <button class="btn btn-default btn-block">フォロー解除する</button>
                     </a>
                   <!-- 2. フォローしているかどうかの条件分岐 -->
                   <?php else: ?>  
-                    <a href="follow.php?following_id=<?php echo $profile_user['id']; ?>">
+                    <a href="follow.php?following_id=<?php echo $profile['id']; ?>">
                         <button class="btn btn-default btn-block">フォローする</button>
                     </a>
                   <?php endif; ?>
@@ -91,14 +97,15 @@
                 </ul>
                 <div class="tab-content">
                     <div id="tab1" class="tab-pane fade in active">
-                        <?php foreach ($followers as $follow): ?>
+                        <?php foreach ($followers as $follower): ?>
                         <div class="thumbnail">
                             <div class="row">
                                 <div class="col-xs-2">
                                     <img src="user_profile_img/<?php echo $follower['img_name']; ?>" width="80px">
                                 </div>
                                 <div class="col-xs-10">
-                                    名前 <a href="profile.php?user_id=<?php echo $follower['id']; ?>" style="color: #7F7F7F;">野原みさえ</a>
+                                    名前 <a href="profile.php?user_id=<?php echo $follower['id']; ?>" style="color: #7F7F7F;">
+                                    <?php echo $follower['name']; ?></a>
                                     <br>
                                     <?php echo $follower['created'];?>からメンバー
                                 </div>
@@ -115,7 +122,8 @@
                                     <img src="user_profile_img/<?php echo $following['img_name']; ?>" width="80px">
                                 </div>
                                 <div class="col-xs-10">
-                                    名前 <a href="profile.php?user_id=<?php echo $following['id']; ?>" style="color: #7F7F7F;"><?php echo $following['name'];?></a>
+                                    名前 <a href="profile.php?user_id=<?php echo $following['id']; ?>" style="color: #7F7F7F;">
+                                    <?php echo $following['name'];?></a>
                                     <br>
                                     <?php echo $following['created']; ?>からメンバー
                                 </div>

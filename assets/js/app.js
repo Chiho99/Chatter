@@ -1,11 +1,11 @@
 $(function() {
     $(document).on('click', '.js-like', function() {
-        var feed_id = $(this).siblings('.feed-id').text();
-        var user_id = $('#signin-user').text();
+        let feed_id = $(this).siblings('.feed-id').text();
+        let user_id = $('#signin-user').text();
         // console.log(feed_id);
         // console.log(user_id);
-        var like_btn = $(this);
-        var like_count = $(this).siblings('.like_count').text();
+        let like_btn = $(this);
+        let like_count = $(this).siblings('.like_count').text();
         $.ajax({
             // 送信先や送信するデータなど
             url: 'like.php',
@@ -55,6 +55,5 @@ $(function() {
         console.log(e);
         })
     });
-            
 });
             

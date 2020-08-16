@@ -8,12 +8,13 @@
     $stmt = $dbh->prepare($sql);
     $stmt->execute($data);
     $signin_user = $stmt->fetch(PDO::FETCH_ASSOC);
-    // var_dump($signin_user['id']);
+    
     // ユーザーの一覧を取得
     $sql = 'SELECT * FROM `users`';
     $stmt = $dbh->prepare($sql);
     $stmt->execute();
     $users = [];
+    
     while(true){
         $record = $stmt->fetch(PDO::FETCH_ASSOC);
         if($record == false){

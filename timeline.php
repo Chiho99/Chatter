@@ -126,7 +126,7 @@
 <?php include('layouts/header.php'); ?>
 <body style="margin-top: 60px; background: #E4E6EB;">
     <?php include('navbar.php'); ?>
-    <span hidden id="signin-user"><?php echo $signin_user['id']; ?></span>
+    <span hidden id="signin-user"><?php echo $signin_user['id'];?></span>
     <div class="container">
         <div class="row">
             <div class="col-xs-3">
