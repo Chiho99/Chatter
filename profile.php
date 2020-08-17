@@ -9,7 +9,8 @@
     $stmt = $dbh->prepare($sql);
     $stmt->execute($data);
     $signin_user = $stmt->fetch(PDO::FETCH_ASSOC);
-   
+    $_SESSION['id'] = $signin_user['id'];
+    // var_dump( $_SESSION['id']);
     // プロフィールを表示しているユーザーのID
     $sql = 'SELECT * FROM `users` WHERE `id`=?';
     $data = [$_GET['user_id']];

@@ -33,7 +33,7 @@
                   <img src="user_profile_img/<?php echo $signin_user['img_name']; ?>" width="18" class="img-circle"><?php echo $signin_user['name']; ?> <span class="caret"></span></a>
 
                   <ul class="dropdown-menu">
-                      <li><a href="profile.php">マイページ</a></li>
+                      <li><a href="profile.php?user_id=<?php echo $signin_user['id']; ?>">マイページ</a></li>
                       <li><a href="signout.php">サインアウト</a></li>
                   </ul>
               </li>

@@ -5,7 +5,7 @@ require('dbconnect.php');
 // フォローするユーザーとフォローされるユーザーのIDを
 // DBに保存にすれば、それがフォロー状態を示す。
 $user_id = $_GET['following_id'];
-$follower_id = 16;
+$follower_id = $_SESSION['id'];
 // GET送信でprofile.phpから受け取る
 if(isset($_GET['unfollow'])){
     // フォロー解除する
