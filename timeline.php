@@ -131,21 +131,21 @@
         <div class="row">
             <div class="col-xs-3">
                 <ul class="nav nav-pills nav-stacked">
-                    <li class="active"><a href="timeline.php?feed_select=news">新着順</a></li>
-                    <li><a href="timeline.php?feed_select=likes">いいね！済み</a></li>
+                    <li class="active"><a href="timeline.php?feed_select=news">New</a></li>
+                    <li><a href="timeline.php?feed_select=likes">Likes</a></li>
                 </ul>
             </div>
             <div class="col-xs-9">
                 <div class="feed_form thumbnail">
                     <form method="POST" action="timeline.php">
                         <div class="form-group">
-                            <textarea name="feed" class="form-control" rows="3" placeholder="Happy Hacking!" style="font-size: 24px;"></textarea><br>
+                            <textarea name="feed" class="form-control" rows="3" placeholder="What's on your mind?" style="font-size: 24px;"></textarea><br>
                             <?php if (isset($errors['feed']) && $errors['feed'] == 'blank') { ?>
-                            <p class="text-danger">投稿データを入力してください</p>
+                            <p class="text-danger">Please fill in the box.</p>
                             <?php } ?>
 
                           </div>
-                        <input type="submit" value="投稿する" class="btn btn-primary">
+                        <input type="submit" value="Post" class="btn btn-primary">
                     </form>
                 </div>
                 <div class="thumbnail">
@@ -173,15 +173,15 @@
                             <?php else: ?>
                               <span hidden class="feed-id"><?php echo $feed['id']; ?></span>
                               <button class="btn btn-default js-like">
-                                  <span >いいね！</span>
+                                  <span >Like！</span>
                               </button>
                             <?php endif; ?>
-                            いいね数：<span class="like-count"><?php echo $feed['like_cnt']; ?></span>
-                            <a href="#collapseComment<?php echo $feed['id']; ?>" data-toggle="collapse" aria-expanded="false"><span>コメントする</span></a>
-                            <span class="comment-count">コメント数：<?php echo $feed['comment_cnt']; ?></span>
+                            Likes：<span class="like-count"><?php echo $feed['like_cnt']; ?></span>
+                            <a href="#collapseComment<?php echo $feed['id']; ?>" data-toggle="collapse" aria-expanded="false"><span>Comment</span></a>
+                            <span class="comment-count">Comments：<?php echo $feed['comment_cnt']; ?></span>
                             <?php if($feed['user_id'] == $signin_user['id']): ?>
-                            <a href="edit.php?feed_id=<?php echo $feed['id']?>" class="btn btn-success btn-xs">編集</a>
-                            <a onclick="return confirm('ほんとに消すの？');" href="delete.php?feed_id=<?php echo $feed['id']?>" class="btn btn-danger btn-xs">削除</a>
+                            <a href="edit.php?feed_id=<?php echo $feed['id']?>" class="btn btn-success btn-xs">Edit</a>
+                            <a onclick="return confirm('Are you sure you want to delete this post?');" href="delete.php?feed_id=<?php echo $feed['id']?>" class="btn btn-danger btn-xs">Delete</a>
                             <?php endif; ?>
                         </div>
                         <?php include('comment_view.php'); ?>

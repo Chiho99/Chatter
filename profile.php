@@ -76,12 +76,12 @@
                   <?php if($is_followed): ?>
                     <!-- URL?キー１=値１＆キー2=値2 -->
                     <a href="follow.php?following_id=<?php echo $profile['id']; ?>&unfollow=true">
-                      <button class="btn btn-default btn-block">フォロー解除する</button>
+                      <button class="btn btn-default btn-block">Unfollow</button>
                     </a>
                   <!-- 2. フォローしているかどうかの条件分岐 -->
                   <?php else: ?>  
                     <a href="follow.php?following_id=<?php echo $profile['id']; ?>">
-                        <button class="btn btn-default btn-block">フォローする</button>
+                        <button class="btn btn-default btn-block">Follow</button>
                     </a>
                   <?php endif; ?>
                 <?php endif; ?>
@@ -105,10 +105,10 @@
                                     <img src="user_profile_img/<?php echo $follower['img_name']; ?>" width="80px">
                                 </div>
                                 <div class="col-xs-10">
-                                    名前 <a href="profile.php?user_id=<?php echo $follower['id']; ?>" style="color: #7F7F7F;">
+                                    Name: <a href="profile.php?user_id=<?php echo $follower['id']; ?>" style="color: #7F7F7F;">
                                     <?php echo $follower['name']; ?></a>
                                     <br>
-                                    <?php echo $follower['created'];?>からメンバー
+                                    Since: <?php echo $follower['created'];?>
                                 </div>
                             </div>
                         </div>
@@ -123,10 +123,10 @@
                                     <img src="user_profile_img/<?php echo $following['img_name']; ?>" width="80px">
                                 </div>
                                 <div class="col-xs-10">
-                                    名前 <a href="profile.php?user_id=<?php echo $following['id']; ?>" style="color: #7F7F7F;">
+                                    Name: <a href="profile.php?user_id=<?php echo $following['id']; ?>" style="color: #7F7F7F;">
                                     <?php echo $following['name'];?></a>
                                     <br>
-                                    <?php echo $following['created']; ?>からメンバー
+                                    Since: <?php echo $following['created']; ?>
                                 </div>
                             </div>
                         </div>

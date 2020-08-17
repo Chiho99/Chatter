@@ -24,10 +24,10 @@
 
 
 ?>
-<html lang="ja">
+<html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Learn SNS</title>
+  <title>Chatter</title>
   <link rel="stylesheet" type="text/css" href="../assets/css/bootstrap.css">
   <link rel="stylesheet" type="text/css" href="../assets/font-awesome/css/font-awesome.css">
   <link rel="stylesheet" type="text/css" href="../assets/css/style.css">
@@ -36,32 +36,32 @@
   <div class="container">
     <div class="row">
       <div class="col-xs-8 col-xs-offset-2 thumbnail">
-        <h2 class="text-center content_header">アカウント情報確認</h2>
+        <h2 class="text-center content_header">Confirm the account.</h2>
         <div class="row">
           <div class="col-xs-4">
             <img src="../user_profile_img/<?php echo htmlspecialchars($img_name); ?>" class="img-responsive img-thumbnail">
           </div>
           <div class="col-xs-8">
             <div>
-              <span>ユーザー名</span>
+              <span>Name</span>
               <p class="lead"><?php echo htmlspecialchars($name); ?></p>
             </div>
             <div>
-              <span>メールアドレス</span>
+              <span>Email</span>
               <p class="lead"><?php echo htmlspecialchars($email); ?></p>
             </div>
             <div>
-              <span>パスワード</span>
+              <span>Password</span>
               <!-- ② -->
               <p class="lead">●●●●●●●●</p>
             </div>
             <!-- ③ -->
             <form method="POST" action="">
               <!-- ④ -->
-              <a href="signup.php?action=rewrite" class="btn btn-default">&laquo;&nbsp;戻る</a> | 
+              <a href="signup.php?action=rewrite" class="btn btn-default">&laquo;&nbsp;Back</a> | 
               <!-- ⑤ -->
               <input type="hidden" name="action" value="submit">
-              <input type="submit" class="btn btn-primary" value="ユーザー登録">
+              <input type="submit" class="btn btn-primary" value="Register">
             </form>
           </div>
         </div>

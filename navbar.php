@@ -7,24 +7,27 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="index.php">Learn SNS</a>
+          <a class="navbar-brand" href="index.php">
+              <!-- <img src="https://a.slack-edge.com/production-standard-emoji-assets/10.2/google-large/1f5e3-fe0f@2x.png" style="width: 30%;"> -->
+                Chatter
+            </a>
       </div>
       <div class="collapse navbar-collapse" id="navbar-collapse1">
           <ul class="nav navbar-nav">
           <?php if (strpos($_SERVER['REQUEST_URI'], 'timeline.php') !== false): ?>
-            <li class="active"><a href="timeline.php">タイムライン</a></li>
-            <li><a href="users.php">ユーザー一覧</a></li>
+            <li class="active"><a href="timeline.php">Timeline</a></li>
+            <li><a href="users.php">Users</a></li>
           <?php else: ?>
-            <li><a href="timeline.php">タイムライン</a></li>
-            <li class="active"><a href="users.php">ユーザー一覧</a></li>
+            <li><a href="timeline.php">Timeline</a></li>
+            <li class="active"><a href="users.php">Users</a></li>
           <?php endif; ?>
 
           </ul>
           <form method="GET" action="timeline.php" class="navbar-form navbar-left" role="search">
               <div class="form-group">
-                  <input type="text" name="search_word" class="form-control" placeholder="投稿を検索" value="">
+                  <input type="text" name="search_word" class="form-control" placeholder="Look for ?" value="">
               </div>
-              <button type="submit" class="btn btn-default">検索</button>
+              <button type="submit" class="btn btn-default">Search</button>
           </form>
           <ul class="nav navbar-nav navbar-right">
               <li class="dropdown">
@@ -33,8 +36,8 @@
                   <img src="user_profile_img/<?php echo $signin_user['img_name']; ?>" width="18" class="img-circle"><?php echo $signin_user['name']; ?> <span class="caret"></span></a>
 
                   <ul class="dropdown-menu">
-                      <li><a href="profile.php?user_id=<?php echo $signin_user['id']; ?>">マイページ</a></li>
-                      <li><a href="signout.php">サインアウト</a></li>
+                      <li><a href="profile.php?user_id=<?php echo $signin_user['id']; ?>">My Page</a></li>
+                      <li><a href="signout.php">Sign-out</a></li>
                   </ul>
               </li>
           </ul>

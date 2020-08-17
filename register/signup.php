@@ -65,10 +65,10 @@
 ?>
 
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Learn SNS</title>
+    <title>Chatter</title>
     <link rel="stylesheet" type="text/css" href="../assets/css/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="../assets/font-awesome/css/font-awesome.css">
     <link rel="stylesheet" type="text/css" href="../assets/css/style.css">
@@ -77,49 +77,49 @@
     <div class="container">
         <div class="row">
             <div class="col-xs-8 col-xs-offset-2 thumbnail">
-                <h2 class="text-center content_header">アカウント作成</h2>
+                <h2 class="text-center content_header">Sign up for free and <br >experience Chatter today🎉</h2>
                 <form method="POST" action="signup.php" enctype="multipart/form-data">
                     <div class="form-group">
-                        <label for="name">ユーザー名</label>
-                        <input type="text" name="input_name" class="form-control" id="name" placeholder="山田 太郎"
+                        <label for="name">Name</label>
+                        <input type="text" name="input_name" class="form-control" id="name" placeholder="User Name"
                             value="<?php echo htmlspecialchars($name); ?>">
                             <?php if(isset($errors['name']) && $errors['name'] == 'blank') : ?>
-                            <p class="text-danger">ユーザー名を入力してください</p>
+                            <p class="text-danger">Please fill in  Name box.</p>
                             <?php endif; ?>
                     </div>
                     <div class="form-group">
-                        <label for="email">メールアドレス</label>
+                        <label for="email">Email</label>
                         <input type="email" name="input_email" class="form-control" id="email" placeholder="example@gmail.com"
                             value="<?php echo htmlspecialchars($email); ?>">
                             <?php if(isset($errors['email']) && $errors['email'] == 'blank') : ?>
-                            <p class="text-danger">メールアドレスを入力してください</p>
+                            <p class="text-danger">Please fill in  Email box.</p>
                             <?php endif; ?>
                     </div>
                     <div class="form-group">
-                        <label for="password">パスワード</label>
-                        <input type="password" name="input_password" class="form-control" id="password" placeholder="4 ~ 16文字のパスワード">
+                        <label for="password">Password</label>
+                        <input type="password" name="input_password" class="form-control" id="password" placeholder="4 ~ 16 letters of password">
                         <?php if(isset($errors['password']) && $errors['password'] == 'blank') : ?>
-                        　　<p class="text-danger">パスワードを入力してください</p>
+                          <p class="text-danger">Please fill in Password box.</p>
                         <?php endif; ?>
                         <?php if(isset($errors['password']) && $errors['password'] == 'length') : ?>
-              　　　　　　　　<p class="text-danger">パスワードは4 ~ 16文字で入力してください</p>
-            　　　　　　　<?php endif; ?>
+                          <p class="text-danger">Password must be 4~16 letters.</p>
+                        <?php endif; ?>
                       <!-- もし$errorsが空じゃなければエラーメッセージを出力する -->
                         <?php if(!empty($errors)) { ?>
-                          <p class="text-danger">パスワードを再度入力して下さい</p>
+                          <p class="text-danger">Please fill in Password box again.</p>
                         <?php } ?>
 
                     </div>
                     <div class="form-group">
-                        <label for="img_name">プロフィール画像</label>
+                        <label for="img_name">Profile img</label>
                         <input type="file" name="input_img_name" id="img_name" accept="image/*">
                         <?php if(isset($errors['img_name']) && $errors['img_name'] == 'type') : ?>
-                            <p class="text-danger">拡張子が「jpg」「png」「gif」の画像を選択してください</p>
+                            <p class="text-danger">Must be「jpg」「png」「gif」file.</p>
                         <?php endif; ?>
                     </div>
-                    <input type="submit" class="btn btn-default" value="確認">
-                    <span style="float: right; padding-top: 6px;">ログインは
-                        <a href="../signin.php">こちら</a>
+                    <input type="submit" class="btn btn-default" value="Confirm">
+                    <span style="float: right; padding-top: 6px;">Log in
+                        <a href="../signin.php">Here</a>
                     </span>
                 </form>
             </div>

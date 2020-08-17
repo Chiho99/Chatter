@@ -44,17 +44,17 @@
                             <img src="user_profile_img/<?php echo $user['img_name'];?>" width="80px">
                         </div>
                         <div class="col-xs-11">
-                            名前  <?php echo $user['name'];?><br>
+                            Name:  <?php echo $user['name'];?><br>
                             <!-- ユーザー一覧からどのユーザーが選択されたかを示すために、GETパラメータを追加 -->
                             <!-- 送るべき値はどのユーザーかなので、一意に絞り込めるIDをパラメータに利用 -->
                             <a href="profile.php?user_id=<?php echo $user['id']; ?>" style="color: #7f7f7f;">
-                                <?php echo $user['created']; ?>からメンバー
+                              Since:  <?php echo $user['created']; ?>
                             </a>
                         </div>
                     </div>
                     <div class="row feed_sub">
                         <div class="col-xs-12">
-                            <span class="comment_count">つぶやき数：<?php echo $user['feed_cnt']?></span>
+                            <span class="comment_count">Posts：<?php echo $user['feed_cnt']?></span>
                         </div>
                     </div>
                 </div>
