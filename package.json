@@ -1,0 +1,22 @@
+{
+  "name": "new_learnsns",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Chiho99/New_LearnSNS.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Chiho99/New_LearnSNS/issues"
+  },
+  "homepage": "https://github.com/Chiho99/New_LearnSNS#readme",
+  "devDependencies": {
+    "webpack": "^4.44.1"
+  }
+}
