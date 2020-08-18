@@ -30,7 +30,7 @@
         //SESSION変数にIDを保存
         $_SESSION['LearnSNS']['id'] = $record['id'];
         //timeline.phpに移動
-        header("Location: timeline.php");
+        header ('Location: timeline.php');
         exit();
       }else{
         $errors['signin'] = 'failed';
