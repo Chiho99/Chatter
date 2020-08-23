@@ -1,21 +1,109 @@
+const path = require('path');
+const webpack = require('webpack');
+
+/*
+ * SplitChunksPlugin is enabled by default and replaced
+ * deprecated CommonsChunkPlugin. It automatically identifies modules which
+ * should be splitted of chunk by heuristics using module duplication count and
+ * module category (i. e. node_modules). And splits the chunks…
+ *
+ * It is safe to remove "splitChunks" from the generated configuration
+ * and was added as an educational example.
+ *
+ * https://webpack.js.org/plugins/split-chunks-plugin/
+ *
+ */
+
+/*
+ * We've enabled MiniCssExtractPlugin for you. This allows your app to
+ * use css modules that will be moved into a separate CSS file instead of inside
+ * one of your module entries!
+ *
+ * https://github.com/webpack-contrib/mini-css-extract-plugin
+ *
+ */
+
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+
+/*
+ * We've enabled TerserPlugin for you! This minifies your app
+ * in order to load faster and run less javascript.
+ *
+ * https://github.com/webpack-contrib/terser-webpack-plugin
+ *
+ */
+
+const TerserPlugin = require('terser-webpack-plugin');
+
+const workboxPlugin = require('workbox-webpack-plugin');
+
 module.exports = {
-    entry: __dirname + "assets/js/jquery-3.1.1.js", //ビルドするファイル
-    output: {
-      path: __dirname +'assets/js', //ビルドしたファイルを吐き出す場所
-      filename: 'bundle.js' //ビルドした後のファイル名
-    },
-      module: {
-      loaders: [
-              //loader
-              {
-                test: /\.js$/,
-                loader: 'babel-loader',
-                exclude: /node_modules/,
-                query://loaderに渡したいクエリパラメータを指定します
-                 {
-                   presets: ['es2015','stage-0']
-                 }
-               }
-        ]
-    },
-  };
+	mode: 'development',
+
+	entry: {
+		pageOne: './assets/js/app.js',
+		pageTwo: './assets/js/bootstrap.js.js'
+	},
+
+	output: {
+		chunkFilename: '[name].[chunkhash].js',
+		filename: '[name].[chunkhash].js'
+	},
+
+	plugins: [
+		new webpack.ProgressPlugin(),
+		new MiniCssExtractPlugin({ filename: 'main.[chunkhash].css' }),
+		new workboxPlugin.GenerateSW({
+			swDest: 'sw.js',
+			clientsClaim: true,
+			skipWaiting: false
+		})
+	],
+
+	module: {
+		rules: [
+			{
+				test: /.(js|jsx)$/,
+				include: [path.resolve(__dirname, 'assets/js')],
+				loader: 'babel-loader'
+			},
+			{
+				test: /.css$/,
+
+				use: [
+					{
+						loader: MiniCssExtractPlugin.loader
+					},
+					{
+						loader: 'style-loader'
+					},
+					{
+						loader: 'css-loader',
+
+						options: {
+							sourceMap: true
+						}
+					}
+				]
+			}
+		]
+	},
+
+	optimization: {
+		minimizer: [new TerserPlugin()],
+
+		splitChunks: {
+			cacheGroups: {
+				vendors: {
+					priority: -10,
+					test: /[\\/]node_modules[\\/]/
+				}
+			},
+
+			chunks: 'async',
+			minChunks: 1,
+			minSize: 30000,
+			name: true
+		}
+	}
+};
