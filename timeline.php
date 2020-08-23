@@ -1,7 +1,7 @@
 <?php
-    require('dbconnect.php');
     session_start();
-
+    require('dbconnect.php');
+    
     $sql = 'SELECT * FROM `users` WHERE `id`=?';
     $data = [$_SESSION['LearnSNS']['id']];
     // $data = [$_GET['user_id']];
