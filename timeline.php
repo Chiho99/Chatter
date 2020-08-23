@@ -151,7 +151,7 @@
                 <?php foreach($feeds as $feed): ?>
                     <div class="row">
                         <div class="col-xs-1">
-                            <!-- <img src="user_profile_img/<?php echo $feed['img_name'];?>" width="40px"> -->
+                            <img src="user_profile_img/<?php echo $feed['img_name'];?>" width="40px">
                         </div>
                         <div class="col-xs-11">
                             <?php echo $feed['name']; ?><br>
@@ -207,5 +207,5 @@
         </div>
     </div>
 </body>
-
+<?php include('layouts/footer.php'); ?>
 </html>
