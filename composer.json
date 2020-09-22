@@ -1,0 +1,6 @@
+{
+    "require": {
+      "cloudinary/cloudinary_php": "dev-master",
+        "vlucas/phpdotenv": "^5.2"
+    }
+  }
